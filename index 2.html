@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#102a43">
+<title>جدول المرحلة الثانية | تقنيات المختبرات الطبية</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Tahoma,Arial,sans-serif;background:#f3f6fa;color:#172b4d}
+header{background:linear-gradient(135deg,#102a43,#1f5f8b);color:#fff;padding:22px 16px;text-align:center}
+header h1{margin:0 0 7px;font-size:24px}header p{margin:4px 0;opacity:.92}
+.container{max-width:1100px;margin:auto;padding:16px}
+.card{background:#fff;border-radius:16px;padding:16px;margin:14px 0;box-shadow:0 5px 18px #00000012}
+.tabs{display:flex;gap:8px;overflow:auto;margin-bottom:12px}.tabs button{border:0;border-radius:12px;padding:11px 16px;background:#e8eef5;color:#16324f;font-weight:700;white-space:nowrap;cursor:pointer}.tabs button.active{background:#1f5f8b;color:#fff}
+.day{font-size:20px;font-weight:800;margin:4px 0 12px}.note{font-size:13px;color:#66788a;margin-bottom:10px}
+table{width:100%;border-collapse:separate;border-spacing:0;overflow:hidden;border-radius:12px;border:1px solid #e2e8f0}
+th,td{padding:12px 9px;border-bottom:1px solid #e2e8f0;text-align:center;vertical-align:middle}th{background:#eef4f8}tr:last-child td{border-bottom:0}
+.subject{font-weight:800}.teacher{font-size:12px;color:#60758a;margin-top:5px}.room{font-size:12px;color:#1f5f8b;margin-top:4px}
+.badge{display:inline-block;padding:4px 8px;border-radius:999px;background:#eef6ff;color:#1f5f8b;font-size:11px;margin-top:5px}
+footer{text-align:center;padding:24px 12px;color:#66788a;font-size:13px}
+@media(max-width:650px){header h1{font-size:20px}.container{padding:10px}.card{padding:11px}th,td{padding:9px 5px;font-size:12px}.day{font-size:18px}}
+</style>
+</head>
+<body>
+<header>
+<h1>جدول المرحلة الثانية</h1>
+<p>Department of Medical Laboratory Techniques</p>
+<p>Academic Year 2026–2027</p>
+</header>
+<div class="container">
+<div class="card">
+<div class="tabs" id="tabs"></div>
+<div id="content"></div>
+</div>
+<div class="card">
+<h3>Practical Weekly Timetable</h3>
+<div class="note">المعلومات العملية حسب ملف الجدول المرفوع.</div>
+<div id="practical"></div>
+</div>
+</div>
+<footer>مصمم الموقع: <strong>مصطفى مهند حامد</strong></footer>
+<script>
+const schedule = {
+"Saturday":[
+["8:30–10:00","Histology-1","B2","M-003","م.م. سمية ناظم محمد"],
+["8:30–10:00","Biochemistry-1","B3","M-104","م.م. بالل عبد المجيد"],
+["10:00–11:30","Medical Bacteriology-1","A4","M-002","م.م. محمد هاشم محمد"],
+["10:00–11:30","Human Physiology-1","A1","M-003","أ.د. عبد علي ذاكر"],
+["11:30–1:00","Medical Parasitology-1","A2","M-002","م.م. محمود ياسين مخلف"],
+["1:00–2:30","Crimes of baath","A&B","Online",""],
+["1:00–2:30","Arabic Language","A&B","Online",""]
+],
+"Sunday":[
+["8:30–10:00","Human Physiology-1","B1","M-003","أ.د. عبد علي ذاكر"],
+["10:00–11:30","Histology-1","A4","M-003","م.م. سمية ناظم محمد"],
+["11:30–1:00","Medical Bacteriology-1","B1","M-002","م.م. محمد هاشم محمد"],
+["1:00–2:30","Biochemistry-1","A1","M-104","م.م. بالل عبد المجيد"],
+["1:00–2:30","Medical Parasitology-1","B1","M-002","م.م. محمود ياسين مخلف"]
+],
+"Monday":[
+["8:30–10:00","Medical Parasitology-1","A4","M-002","م.م. محمود ياسين مخلف"],
+["10:00–11:30","Medical Bacteriology-1","B4","M-002","م.م. محمد هاشم محمد"],
+["11:30–1:00","Human Physiology-1","A2","M-003","أ.د. عبد علي ذاكر"],
+["1:00–2:30","Histology-1","A1","M-003","م.م. سمية ناظم محمد"]
+],
+"Tuesday":[
+["8:30–10:00","Biochemistry-1","B1","M-104","م.م. بالل عبد المجيد"],
+["10:00–11:30","Histology-1","B2","M-003","م.م. سمية ناظم محمد"],
+["11:30–1:00","Medical Parasitology-1","A2","M-002","م.م. محمود ياسين مخلف"],
+["1:00–2:30","Medical Bacteriology-1","B4","M-002","م.م. محمد هاشم محمد"]
+],
+"Wednesday":[
+["8:30–10:00","Medical Parasitology-1","A3","M-002","م.م. محمود ياسين مخلف"],
+["10:00–11:30","Human Physiology-1","B1","M-003","أ.د. عبد علي ذاكر"],
+["11:30–1:00","Biochemistry-1","A1","M-104","م.م. بالل عبد المجيد"],
+["1:00–2:30","Histology-1","A4","M-003","م.م. سمية ناظم محمد"]
+]
+};
+const order=["Saturday","Sunday","Monday","Tuesday","Wednesday"];
+let active="Saturday";
+function render(){
+ document.getElementById("tabs").innerHTML=order.map(d=>`<button class="${d===active?'active':''}" onclick="active='${d}';render()">${d}</button>`).join("");
+ const rows=schedule[active].map(x=>`<tr><td>${x[0]}</td><td><div class="subject">${x[1]}</div><span class="badge">${x[2]}</span></td><td><div class="room">${x[3]}</div><div class="teacher">${x[4]}</div></td></tr>`).join("");
+ document.getElementById("content").innerHTML=`<div class="day">${active}</div><table><thead><tr><th>Time</th><th>Subject / Group</th><th>Room / Lecturer</th></tr></thead><tbody>${rows}</tbody></table>`;
+}
+const practical=[
+["Medical Parasitology-1","M-002","B2 / B1 / A4 / A3"],
+["Medical Bacteriology-1","M-002","B3 / B2 / B1 / B4"],
+["Human Physiology-1","M-003","B1 / A2 / B4 / B1"],
+["Histology-1","M-003","A4 / A1 / A2 / A3"],
+["Biochemistry-1","M-104","A2 / A4 / A3 / B4"]
+];
+document.getElementById("practical").innerHTML=`<table><thead><tr><th>Subject</th><th>Lab No.</th><th>Groups</th></tr></thead><tbody>${practical.map(x=>`<tr><td class="subject">${x[0]}</td><td>${x[1]}</td><td>${x[2]}</td></tr>`).join("")}</tbody></table>`;
+render();
+</script>
+</body>
+</html>
